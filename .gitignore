@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.png
+static.txt
+dynamic.txt
+neighbors_plot.png
