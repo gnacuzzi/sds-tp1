@@ -4,3 +4,6 @@ __pycache__/
 static.txt
 dynamic.txt
 neighbors_plot.png
+*.o
+*.out
+*.txt
