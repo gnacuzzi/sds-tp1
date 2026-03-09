@@ -8,6 +8,7 @@
 #include "io.h"
 #include "brute_force.h"
 #include "cim.h"
+#include "experiment.h"
 
 #define STATIC_FILE "data/static.txt"
 #define DYNAMIC_FILE "data/dynamic.txt"
@@ -88,6 +89,12 @@ static void print_usage(const char *program_name) {
 }
 
 int main(int argc, char *argv[]) {
+
+    if (argc > 1 && strcmp(argv[1], "experiment") == 0) {
+        run_experiment();
+        return 0;
+    }
+
     int N = 100;
     int M = 10;
     int periodic = 0;

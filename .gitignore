@@ -7,3 +7,4 @@ neighbors_plot.png
 *.o
 *.out
 *.txt
+*.csv

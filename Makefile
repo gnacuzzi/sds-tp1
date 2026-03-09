@@ -11,7 +11,8 @@ $(SRC_DIR)/io.c \
 $(SRC_DIR)/geometry.c \
 $(SRC_DIR)/brute_force.c \
 $(SRC_DIR)/cim.c \
-$(SRC_DIR)/particle.c
+$(SRC_DIR)/particle.c \
+$(SRC_DIR)/experiment.c
 
 TARGET = tp1
 
