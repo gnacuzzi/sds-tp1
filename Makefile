@@ -16,7 +16,10 @@ $(SRC_DIR)/experiment.c
 
 TARGET = tp1
 
-all: $(TARGET)
+all: data $(TARGET)
+
+data:
+	mkdir -p data
 
 $(TARGET):
 	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET) $(LDFLAGS)
