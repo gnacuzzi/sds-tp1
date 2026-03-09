@@ -19,3 +19,24 @@ def write_dynamic_file(filename: str, particles: list[Particle], t: float = 0.0)
         for p in particles:
             f.write(f"{p.x} {p.y} {p.vx} {p.vy}\n")
 
+
+def write_neighbors_file(filename, neighbors):
+    """
+    Writes neighbor list to file in the format:
+
+    [particle_id neighbor1 neighbor2 neighbor3 ...]
+    """
+
+    with open(filename, "w") as f:
+        for pid in sorted(neighbors.keys()):
+            neighs = sorted(neighbors[pid])
+
+            line = f"[{pid}"
+
+            if neighs:
+                line += " " + " ".join(str(n) for n in neighs)
+
+            line += "]"
+
+            f.write(line + "\n")
+

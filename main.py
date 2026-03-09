@@ -5,7 +5,7 @@ import random
 from generator import generate_particles
 from brute_force import brute_force_neighbors, brute_force_neighbors_periodic
 from cim import cim_neighbors, cim_neighbors_periodic
-from io_utils import write_static_file, write_dynamic_file
+from io_utils import write_static_file, write_dynamic_file, write_neighbors_file
 from visualizer import plot_particles
 
 
@@ -43,6 +43,7 @@ def main():
     print("N recibido:", N)
     print("M recibido:", M)
     print("Periódico:", periodic)
+    print()
 
     particles = generate_particles(N, L, r_min, r_max)
 
@@ -59,7 +60,15 @@ def main():
     bf_result = normalize_neighbors(bf_result)
     cim_result = normalize_neighbors(cim_result)
 
-    print("¿Dan igual?", bf_result == cim_result)
+    write_neighbors_file("neighbors_bruteforce.txt", bf_result)
+    write_neighbors_file("neighbors_cim.txt", cim_result)
+
+    if bf_result == cim_result:
+        print("✔ Lista de vecinos coincide entre Fuerza Bruta y CIM.")
+    else:
+        print("✖ Listas de vecinos NO coinciden entre Fuerza Bruta y CIM.")
+
+    print()
     print(f"Tiempo brute force: {bf_time:.6f} s")
     print(f"Tiempo CIM:         {cim_time:.6f} s")
 
