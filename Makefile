@@ -19,7 +19,7 @@ TARGET = tp1
 all: data $(TARGET)
 
 data:
-	mkdir -p data
+	mkdir -p data output
 
 $(TARGET):
 	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET) $(LDFLAGS)
@@ -32,3 +32,4 @@ run-periodic: $(TARGET)
 
 clean:
 	rm -f $(TARGET)
+	rm -rf data output
