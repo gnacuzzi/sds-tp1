@@ -117,14 +117,14 @@ int main(int argc, char *argv[]) {
         periodic = atoi(argv[3]);
     }
     if (argc > 4) {
-        L = atoi(argv[4]);
+        L = (double)atoi(argv[4]);
         return 1;
     }
     if (argc > 5){
-        rc = atoi(argv[5]);
+        rc = (double)atoi(argv[5]);
     }
 
-    if (argc > 6 || ((argc >= 1) && (strcmp("-h", argv[1])==0))){
+    if (argc > 6){
         print_usage(argv[0]);
         return 1;
     } 
