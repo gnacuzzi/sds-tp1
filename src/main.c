@@ -86,9 +86,12 @@ static void print_usage(const char *program_name) {
     printf("  N         Number of particles (default: 100)\n");
     printf("  M         Number of cells per dimension (default: 10)\n");
     printf("  periodic  0 = walls, 1 = periodic boundaries (default: 0)\n");
+    printf("  L         Change L value\n");
+    printf("  rc        Change rc value\n" );
 }
 
 int main(int argc, char *argv[]) {
+    printf("Arguments %d\n", argc);
 
     if (argc > 1 && strcmp(argv[1], "experiment") == 0) {
         run_experiment();
@@ -114,9 +117,17 @@ int main(int argc, char *argv[]) {
         periodic = atoi(argv[3]);
     }
     if (argc > 4) {
-        print_usage(argv[0]);
+        L = atoi(argv[4]);
         return 1;
     }
+    if (argc > 5){
+        rc = atoi(argv[5]);
+    }
+
+    if (argc > 6 || ((argc >= 1) && (strcmp("-h", argv[1])==0))){
+        print_usage(argv[0]);
+        return 1;
+    } 
 
     if (N <= 0 || M <= 0 || (periodic != 0 && periodic != 1)) {
         print_usage(argv[0]);
