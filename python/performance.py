@@ -1,6 +1,8 @@
+import argparse
 import csv
 import math
 import os
+import numpy as np
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
@@ -61,7 +63,7 @@ def group_statistics(rows, study_name, x_field):
     return stats
 
 
-def plot_study(stats, x_label, title, output_file, log_scale=False):
+def plot_study(stats, x_label, title, output_file, log_scale=False, show_ON=False):
     plt.figure(figsize=(8, 6))
 
     methods = ["brute_force", "cim"]
@@ -87,6 +89,14 @@ def plot_study(stats, x_label, title, output_file, log_scale=False):
             label=labels[method],
         )
 
+    if (show_ON):
+        x = np.arange(100, 800)
+        y = x * x
+        y = y/500000000
+        y2 = x/2300000
+        plt.plot(x,y, label = "O(N²)*const")
+        plt.plot(x,y2, label = "O(N)*const")
+
     plt.xlabel(x_label)
     plt.ylabel("Time (s)")
     plt.title(title)
@@ -100,8 +110,14 @@ def plot_study(stats, x_label, title, output_file, log_scale=False):
     plt.savefig(output_file, dpi=300)
     plt.close()
 
+def arg_parser():
+    parser = argparse.ArgumentParser(description="Particle preformanze analyzer")
+    parser.add_argument("--sON", action="store_true")
+    return parser.parse_args()
 
 def main():
+    args = arg_parser()
+
     input_file = "data/performance.csv"
     output_dir = "output"
 
@@ -117,6 +133,7 @@ def main():
         title="Execution Time vs N",
         output_file=os.path.join(output_dir, "experiment_vary_N.png"),
         log_scale=False,
+        show_ON = args.sON
     )
 
     # Study 2: vary M
@@ -127,6 +144,7 @@ def main():
         title="Execution Time vs M",
         output_file=os.path.join(output_dir, "experiment_vary_M.png"),
         log_scale=False,
+        show_ON = False
     )
 
     print("Plots generated:")
