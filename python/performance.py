@@ -22,24 +22,61 @@ def stddev(values):
 
 
 def read_performance_csv(filename):
+    metadata = {}
     rows = []
 
     with open(filename, "r") as f:
-        reader = csv.DictReader(f)
+        data_lines = []
 
-        for row in reader:
-            rows.append(
-                {
-                    "study": row["study"],
-                    "N": int(row["N"]),
-                    "M": int(row["M"]),
-                    "method": row["method"],
-                    "run": int(row["run"]),
-                    "time_seconds": float(row["time_seconds"]),
-                }
-            )
+        for line in f:
+            if line.startswith("#"):
+                content = line[1:].strip()
+                if "=" in content:
+                    key, value = content.split("=", 1)
+                    metadata[key.strip()] = value.strip()
+            else:
+                if line.startswith("study"):
+                    data_lines.append(line)
+                elif not line.startswith("#"):
+                    data_lines.append(line)
 
-    return rows
+    reader = csv.DictReader(data_lines)
+
+    for row in reader:
+
+        # saltear líneas basura o headers repetidos
+        if not row["N"].isdigit():
+            continue
+
+        rows.append(
+            {
+                "study": row["study"],
+                "N": int(row["N"]),
+                "M": int(row["M"]),
+                "method": row["method"],
+                "run": int(row["run"]),
+                "time_seconds": float(row["time_seconds"]),
+            }
+        )
+
+    return metadata, rows
+
+def build_title_vary_n(metadata):
+    return (
+        "Execution Time vs N\n"
+        f"L={metadata.get('L')} | rc={metadata.get('rc')} | "
+        f"ri~U[{metadata.get('r_min')}, {metadata.get('r_max')}] | "
+        f"M fixed={metadata.get('vary_N_M_fixed')}"
+    )
+
+
+def build_title_vary_m(metadata):
+    return (
+        "Execution Time vs M\n"
+        f"L={metadata.get('L')} | rc={metadata.get('rc')} | "
+        f"ri~U[{metadata.get('r_min')}, {metadata.get('r_max')}] | "
+        f"N fixed={metadata.get('vary_M_N_fixed')}"
+    )
 
 
 def group_statistics(rows, study_name, x_field):
@@ -64,7 +101,7 @@ def group_statistics(rows, study_name, x_field):
 
 
 def plot_study(stats, x_label, title, output_file, log_scale=False, show_ON=False):
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(10, 6))
 
     methods = ["brute_force", "cim"]
     labels = {
@@ -123,17 +160,17 @@ def main():
 
     os.makedirs(output_dir, exist_ok=True)
 
-    rows = read_performance_csv(input_file)
+    metadata, rows = read_performance_csv(input_file)
 
     # Study 1: vary N
     stats_vary_n = group_statistics(rows, "vary_N", "N")
     plot_study(
         stats=stats_vary_n,
         x_label="N",
-        title="Execution Time vs N",
+        title=build_title_vary_n(metadata),
         output_file=os.path.join(output_dir, "experiment_vary_N.png"),
         log_scale=False,
-        show_ON = args.sON
+        show_ON=args.sON
     )
 
     # Study 2: vary M
@@ -141,10 +178,10 @@ def main():
     plot_study(
         stats=stats_vary_m,
         x_label="M",
-        title="Execution Time vs M",
+        title=build_title_vary_m(metadata),
         output_file=os.path.join(output_dir, "experiment_vary_M.png"),
         log_scale=False,
-        show_ON = False
+        show_ON=False
     )
 
     print("Plots generated:")

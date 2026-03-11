@@ -76,7 +76,11 @@ RAW_TSV="${OUT_DIR}/cim_times.tsv"
 mkdir -p "$OUT_DIR"
 
 # Escribimos header para que sea auto-documentado.
-echo -e "M\trun\tcim_time_seconds" > "$RAW_TSV"
+{
+  echo "# N=${N}"
+  echo "# iters=${ITERS}"
+  echo -e "M\trun\tcim_time_seconds"
+} > "$RAW_TSV"
 
 # -----------------------------------------------------------------------------
 # Loop principal del benchmark

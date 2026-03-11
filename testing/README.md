@@ -42,3 +42,14 @@ chmod +x testing/benchmark_cim_m.sh
 ./testing/benchmark_cim_m.sh -i 200 -m "13 12 11 10"
 ```
 
+## Generar gráfico del experimento de M
+
+Para visualizar los resultados del benchmark de CIM y el análisis del valor óptimo de `M`, se puede generar un gráfico utilizando el script de Python incluido en el repositorio.
+
+Ejecutar:
+
+```bash
+python3 python/plot_cim_m.py
+```
+
+El script lee los datos generados por el benchmark y produce un gráfico con el tiempo de ejecución de CIM en función de `M`.

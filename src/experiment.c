@@ -70,6 +70,13 @@ void run_experiment(void) {
         return;
     }
 
+    fprintf(file, "# L=%.2f\n", L);
+    fprintf(file, "# rc=%.2f\n", rc);
+    fprintf(file, "# r_min=%.2f\n", r_min);
+    fprintf(file, "# r_max=%.2f\n", r_max);
+    fprintf(file, "# vary_N_M_fixed=%d\n", M_fixed);
+    fprintf(file, "# vary_M_N_fixed=%d\n", N_fixed);
+    fprintf(file, "study,N,M,method,run,time_seconds\n");
     fprintf(file, "study,N,M,method,run,time_seconds\n");
 
     /*
