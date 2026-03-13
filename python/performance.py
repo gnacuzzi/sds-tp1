@@ -4,9 +4,21 @@ import math
 import os
 import numpy as np
 from collections import defaultdict
+from scipy.optimize import curve_fit
 
 import matplotlib.pyplot as plt
 
+def model_n2(x, a):
+    return a * x**2
+
+def model_n(x, a):
+    return a * x
+
+def model_n2_offset(x, a, b):
+    return a * x**2 + b
+
+def model_n_offset(x, a, b):
+    return a * x + b
 
 def mean(values):
     return sum(values) / len(values)
@@ -126,13 +138,30 @@ def plot_study(stats, x_label, title, output_file, log_scale=False, show_ON=Fals
             label=labels[method],
         )
 
-    if (show_ON):
-        x = np.arange(100, 800)
-        y = x * x
-        y = y/500000000
-        y2 = x/2300000
-        plt.plot(x,y, label = "O(N²)*const")
-        plt.plot(x,y2, label = "O(N)*const")
+    if show_ON:
+        if "brute_force" in stats:
+            x_bf = np.array(sorted(stats["brute_force"].keys()), dtype=float)
+            y_bf = np.array([stats["brute_force"][x]["mean"] for x in x_bf], dtype=float)
+
+            popt_bf, _ = curve_fit(model_n2, x_bf, y_bf)
+            a_bf = popt_bf[0]
+
+            x_fit = np.linspace(min(x_bf), max(x_bf), 300)
+            y_fit_bf = model_n2(x_fit, a_bf)
+
+            plt.plot(x_fit, y_fit_bf, label=f"Fit Brute Force ≈ {a_bf:.2e}·N²")
+
+        if "cim" in stats:
+            x_cim = np.array(sorted(stats["cim"].keys()), dtype=float)
+            y_cim = np.array([stats["cim"][x]["mean"] for x in x_cim], dtype=float)
+
+            popt_cim, _ = curve_fit(model_n, x_cim, y_cim)
+            a_cim = popt_cim[0]
+
+            x_fit = np.linspace(min(x_cim), max(x_cim), 300)
+            y_fit_cim = model_n(x_fit, a_cim)
+
+            plt.plot(x_fit, y_fit_cim, label=f"Fit CIM ≈ {a_cim:.2e}·N")
 
     plt.xlabel(x_label)
     plt.ylabel("Time (s)")

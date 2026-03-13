@@ -137,6 +137,7 @@ def plot_particles(
             edgecolor="black",
             facecolor=color,
             alpha=0.85,
+            linewidth=0.25,
             zorder=3
         )
         ax.add_patch(circle)
@@ -159,7 +160,7 @@ def plot_particles(
                 edgecolor="orange",
                 facecolor="none",
                 linestyle="--",
-                linewidth=2.5,
+                linewidth=0.25,
                 alpha=alpha,
                 zorder=10
             )

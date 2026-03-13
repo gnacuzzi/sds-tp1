@@ -51,9 +51,9 @@ void run_experiment(void) {
     /*
      * Study 1: vary N, keep M fixed
      */
-    int N_values[] = {100, 200, 400, 600, 800};
+    int N_values[] = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100};
     int num_N_values = sizeof(N_values) / sizeof(N_values[0]);
-    int M_fixed = 10;
+    int M_fixed = 13;
 
     /*
      * Study 2: vary M, keep N fixed
